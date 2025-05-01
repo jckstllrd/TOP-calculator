@@ -25,3 +25,12 @@ function operate(operator, x, y) {
     return divide(x, y);
   }
 }
+
+let buttons = document.querySelectorAll(".btn");
+
+buttons.forEach((button) => {
+  button.addEventListener("click", (e) => {
+    let input = e.target.textContent;
+    console.log(input);
+  });
+});
