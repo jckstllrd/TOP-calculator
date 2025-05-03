@@ -48,12 +48,16 @@ allClear.addEventListener("click", () => {
 function validEquation(memory) {
   console.log(memory);
 
+  console.log("validating memory");
+
   let isValid = true;
   let x;
   let y;
   let operator;
-  let equationList = memory.split();
-  x, operator, y = equationList[0], equationList[1], equationList[2];
+  let equationList = memory.split("");
+  console.log(equationList);
+
+  [x, operator, y] = equationList;
   if (
     operator != "+" ||
     operator != "-" ||
@@ -81,9 +85,36 @@ function splitEquation(memory) {
   let x;
   let y;
   let operator;
-  let equationList = memory.split();
-  x, operator, (y = equationList[0]), equationList[1], equationList[2];
+  let equationList = memory.split("");
+  console.log(equationList);
+
+  [x, operator, y] = equationList;
   return operator, x, y;
+}
+
+function addToMemory(num) {
+  console.log(memory);
+  console.log("Adding to memory");
+
+  let memorySplit = memory.split("");
+  if (memorySplit.length == 3) {
+    console.log("Memory too long currently");
+
+    memorySplit.shift();
+    memorySplit.push(num);
+    console.log(memorySplit);
+  } else {
+    console.log("here");
+    console.log("and adding to memory whilst under 3 chars");
+
+    memorySplit.push(num);
+    console.log(typeof memorySplit);
+
+    console.log(memorySplit);
+  }
+  console.log(typeof memorySplit);
+
+  memory = memorySplit.join("");
 }
 
 let equals = document.querySelector(".equals");
@@ -102,7 +133,7 @@ nums.forEach((num) => {
 
     displayContent(input);
     console.log(memory);
-    memory += input;
+    addToMemory(input);
     console.log(memory);
 
     console.log(input);
@@ -112,7 +143,7 @@ nums.forEach((num) => {
 operators.forEach((operator) => {
   operator.addEventListener("click", (e) => {
     let input = e.target.textContent;
-    memory += input;
+    addToMemory(input);
     console.log(memory);
   });
 });
