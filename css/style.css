@@ -22,7 +22,7 @@ body {
 
 .calculator {
   height: 70%;
-  width: 35%;
+  flex: 0 1 300px;
   display: flex;
   flex-direction: column;
 }

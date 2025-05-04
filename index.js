@@ -40,12 +40,46 @@ function clickButton() {
       } else if (buttons[i].classList.contains("clear")) {
         clearDisplay();
         updateDisplay();
+      } else if (buttons[i].classList.contains("sign")) {
+        inputSign();
+        updateDisplay();
+      } else if (buttons[i].classList.contains("percent")) {
+        inputPercent();
+        updateDisplay();
+      } else if (buttons[i].classList.contains("decimal")) {
+        inputDecimal();
+        updateDisplay();
       }
     });
   }
 }
 
 clickButton();
+
+function inputDecimal() {
+  if (!displayValue.includes(".")) {
+    displayValue += ".";
+  }
+}
+
+function round(number) {
+  return parseFloat(number.toFixed(3).replace(/[.,]000$/, ""))
+  // return parseFloat(number.toFixed(2));
+}
+
+function inputPercent() {
+  firstOperand = displayValue;
+  firstOperand /= 100;
+  displayValue = firstOperand;
+}
+
+function inputSign() {
+  if (displayValue === "0") {
+    return;
+  } else {
+    displayValue = -Number(displayValue);
+  }
+}
 
 function inputOperand(operand) {
   if (firstOperator === null) {
@@ -74,11 +108,11 @@ function inputOperator(operator) {
     secondOperand = displayValue;
     secondOperator = operator;
 
-    result = operate(
+    result = round(operate(
       Number(firstOperand),
       Number(secondOperand),
       firstOperator
-    );
+    ));
     displayValue = result;
     firstOperand = result;
     secondOperand = null;
@@ -108,11 +142,11 @@ function inputEquals() {
   if (firstOperator != null) {
     secondOperand = displayValue;
     debugLog();
-    result = operate(
+    result = round(operate(
       Number(firstOperand),
       Number(secondOperand),
       firstOperator
-    );
+    ));
     console.log(result);
 
     displayValue = result;
