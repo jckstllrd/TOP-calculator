@@ -7,23 +7,131 @@ result = null;
 
 const buttons = document.querySelectorAll(".btn");
 
+function updateDisplay() {
+  const display = document.querySelector(".display");
+  display.innerText = displayValue;
+}
+
+function debugLog() {
+  console.log(
+    firstOperand,
+    firstOperator,
+    secondOperand,
+    secondOperator,
+
+    result,
+    displayValue
+  );
+}
+
+updateDisplay();
+
 function clickButton() {
   for (let i = 0; i < buttons.length; i++) {
-    button = buttons[i];
-    button.addEventListener("click", () => {
-      if (button.classList.contains("operand")) {
-        inputOperand(button.value);
+    buttons[i].addEventListener("click", (e) => {
+      if (buttons[i].classList.contains("operand")) {
+        inputOperand(buttons[i].value);
         updateDisplay();
-      } else if (button.classList.contains("operator")) {
-        inputOperator(button.value);
-      } else if (button.classList.contains("equals")) {
+      } else if (buttons[i].classList.contains("operator")) {
+        inputOperator(buttons[i].value);
+      } else if (buttons[i].classList.contains("equals")) {
         inputEquals();
+        updateDisplay();
+      } else if (buttons[i].classList.contains("clear")) {
+        clearDisplay();
         updateDisplay();
       }
     });
   }
 }
 
-clickButton()
+clickButton();
 
-inputOperand()
+function inputOperand(operand) {
+  if (firstOperator === null) {
+    if (displayValue === "0") {
+      displayValue = operand;
+    } else if (displayValue == firstOperand) {
+      displayValue = operand;
+    } else {
+      displayValue += operand;
+    }
+  } else if (firstOperator != null) {
+    if (displayValue == firstOperand) {
+      displayValue = operand;
+    } else {
+      displayValue += operand;
+    }
+  }
+  debugLog();
+}
+
+function inputOperator(operator) {
+  if (firstOperator != null && secondOperator === null) {
+    console.log("here");
+
+    // Evaluates current equation after adding a second operator
+    secondOperand = displayValue;
+    secondOperator = operator;
+
+    result = operate(
+      Number(firstOperand),
+      Number(secondOperand),
+      firstOperator
+    );
+    displayValue = result;
+    firstOperand = result;
+    secondOperand = null;
+    firstOperator = secondOperator;
+    secondOperator = null;
+    updateDisplay();
+  } else if (firstOperator != null && secondOperator != null) {
+    secondOperator = operator;
+    secondOperand = displayValue;
+  } else {
+    firstOperand = displayValue;
+    firstOperator = operator;
+  }
+  debugLog();
+}
+
+function clearDisplay() {
+  firstOperand = null;
+  secondOperand = null;
+  firstOperator = null;
+  secondOperator = null;
+  displayValue = "0";
+  result = null;
+}
+
+function inputEquals() {
+  if (firstOperator != null) {
+    secondOperand = displayValue;
+    debugLog();
+    result = operate(
+      Number(firstOperand),
+      Number(secondOperand),
+      firstOperator
+    );
+    console.log(result);
+
+    displayValue = result;
+    firstOperand = result;
+    secondOperand = null;
+    firstOperator = null;
+    secondOperator = null;
+    debugLog();
+  }
+}
+
+function operate(x, y, op) {
+  if (op == "+") {
+    return x + y;
+  } else if (op == "-") {
+    return x - y;
+  } else if (op == "*") {
+    return x * y;
+  } else if (op == "/") {
+    return x / y;
+  }
+}
